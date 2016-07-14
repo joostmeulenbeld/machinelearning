@@ -3,7 +3,7 @@ from array import array as pyarray
 from numpy import append, array, int8, uint8, zeros
 import numpy as np
 
-def load_mnist(dataset="training", digits=np.arange(10), path="."):
+def load_mnist(dataset="training", digits=np.arange(10), path="data"):
     """
     Loads MNIST files into 3D numpy arrays
 
@@ -38,4 +38,15 @@ def load_mnist(dataset="training", digits=np.arange(10), path="."):
         images[i] = array(img[ ind[i]*rows*cols : (ind[i]+1)*rows*cols ]).reshape((rows, cols))
         labels[i] = lbl[ind[i]]
 
-    return images, labels
+    return images, labels.flatten()
+
+def generate_target_matrix(array):
+    array = array.flatten()
+    target = np.zeros((array.shape[0], 10))
+    target[np.arange(0, array.shape[0]), array] = 1
+    return target
+
+if __name__ == "__main__":
+    images, labels = load_mnist()
+    print(labels[0:3].flatten().shape)
+    print(generate_target_matrix(labels[0:3]))

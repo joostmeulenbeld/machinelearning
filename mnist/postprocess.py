@@ -1,6 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+import preprocess
+
 
 def plot_digit(digit):
     plt.imshow(digit, cmap=plt.get_cmap("gray"), interpolation="none")
@@ -17,3 +19,10 @@ def plot_multiple_digit(digits):
         plt.axis('off')
     
     plt.show()
+
+
+if __name__ == "__main__":
+    path = 'data'
+
+    images, labels = preprocess.load_mnist(path=path)
+    postprocess.plot_multiple_digit(images[0:200,:,:])
