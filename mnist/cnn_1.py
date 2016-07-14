@@ -41,7 +41,7 @@ class fullyconnected_nn(object):
         return fraction_correct
         
     def network_nn(self, input_var=None, image_size=(28,28)):
-        """Create the fully connected network with one hidden layer"""
+        """Create the fully connected network with two hidden layers"""
         network = {}
         network['input'] = lasagne.layers.InputLayer((None, image_size[0], image_size[1]), input_var=input_var)
         network['fcl1'] = lasagne.layers.DenseLayer(network['input'], num_units=100, nonlinearity=lasagne.nonlinearities.sigmoid)
