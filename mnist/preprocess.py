@@ -9,6 +9,7 @@ def load_mnist(dataset="training", digits=np.arange(10), path="data"):
 
     Adapted from: http://abel.ee.ucla.edu/cvxopt/_downloads/mnist.py
     """
+    assert dataset=="training" or dataset=="testing", "dataset must be 'testing' or 'training'"
 
     if dataset == "training":
         fname_img = os.path.join(path, 'train-images.idx3-ubyte')
@@ -16,8 +17,7 @@ def load_mnist(dataset="training", digits=np.arange(10), path="data"):
     elif dataset == "testing":
         fname_img = os.path.join(path, 't10k-images.idx3-ubyte')
         fname_lbl = os.path.join(path, 't10k-labels.idx1-ubyte')
-    else:
-        raise ValueError("dataset must be 'testing' or 'training'")
+
 
     flbl = open(fname_lbl, 'rb')
     magic_nr, size = struct.unpack(">II", flbl.read(8))
@@ -46,7 +46,7 @@ def generate_target_matrix(array):
     [0 0 0 1 0 0 0 0 0 0;
      0 0 0 0 0 1 0 0 0 0]
     """
-    
+
     target = np.zeros((array.shape[0], 10))
     target[np.arange(0, array.shape[0]), array] = 1
     return target
