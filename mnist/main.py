@@ -10,11 +10,11 @@ import postprocess
 import stopwatch as sw
 
 trainsettings = {
-    "n_epochs": 30,
+    "n_epochs": 1000,
 }
 
 networksettings = {
-    "layersizes": (50, 50, 50),
+    "layersizes": (100, 100),
     "hlnonlinearity": "sigmoid",
     "olnonlinearity": "softmax"
 }
@@ -32,8 +32,12 @@ for i in range(trainsettings["n_epochs"]):
     validationoutput = nn.eval_fn(images_val)
     results = postprocess.analyze_results(images_val, validationoutput, labels_val)
 
+    print("epoch {}: {} correct; done in {}".format(i+1, results["fraction"], t.get_remaining_time_formatted(i+1, trainsettings["n_epochs"])))
 
-    print("epoch {}: {} correct; done in {}".format(i+1, results["fraction"], sw.format_time(sw.remaining_time(i+1, trainsettings["n_epochs"], t.get_time()))))
+    # Since initialization of the theano functions is done the first time this loop runs, the time prediction is completely off. reset the stopwatch
+    if i == 0:
+        t.reset(start=True)
+
 
 validationoutput = nn.eval_fn(images_val)
 results = postprocess.analyze_results(images_val, validationoutput, labels_val)

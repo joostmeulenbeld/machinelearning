@@ -57,6 +57,8 @@ class Stopwatch(object):
         """
         return format_time(self.get_time())
 
+    def get_remaining_time_formatted(self, just_finished, total):
+        return format_time(remaining_time(just_finished, total, self.get_time()))
 
 if __name__ == "__main__":
     sw = Stopwatch(name="joost")

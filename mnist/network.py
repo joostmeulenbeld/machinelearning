@@ -14,7 +14,13 @@ nonlinearities = {
 class Fullyconnected_nn(object):
     """class of a fully connected layer for mnist recognition"""
 
-    def __init__(self, networksettings):
+    def __init__(self, networksettings=None):
+        if networksettings is None:
+            networksettings = {
+                "layersizes": (50,),
+                "hlnonlinearity": "sigmoid",
+                "olnonlinearity": "softmax"
+            }
         self.networksettings = networksettings
         self._input = T.tensor3('input')
         self._target = T.matrix('target')
