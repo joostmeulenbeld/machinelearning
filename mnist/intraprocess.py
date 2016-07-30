@@ -46,15 +46,14 @@ class Ploterror(object):
 
 class Convergence(object):
     """Online analysis of error, calculate if the training is converged
-    A least-squares linear regression is performed on the last n_epochs data points.
-    If the slope is larger than 0, error is going up, and the calculation is converged
-    Due to the stochastic component in training, this is bound to happen when convergence is achieved
-    Setting n_epochs large makes it more robust but it will also take longer to realize convergence is achieved.
+    The most recent n_epochs are checked to see if the lowest error has not been improved
     """
 
     def __init__(self, n_epochs=50):
         self.errors = np.array([])
         self.n_epochs = n_epochs
+        self.best_error = 1
+        self.best_error_epoch = 0
 
     def add_point(self, error):
         """ add a data point
@@ -64,15 +63,18 @@ class Convergence(object):
             boolean if training has now converged or not
         """
         self.errors = np.append(self.errors, error)
+        if error < self.best_error:
+            self.best_error = error
+            self.best_error_epoch = self.errors.size
         return self.converged()
 
     def converged(self):
-        """ Return if the current error array is converged or not, based on the error slope
-        If there are less than n_epochs of data points, return False anyway
+        """ Return if the current error array is converged or not
+        check the last n_epochs if the best error value is within that range
         """
         if self.errors.size < self.n_epochs:
             return False
-        return stats.linregress(np.arange(self.n_epochs), self.errors[-self.n_epochs:])[0] > 0
+        return self.errors.size > self.best_error_epoch + self.n_epochs
 
 
 if __name__ == "__main__":
