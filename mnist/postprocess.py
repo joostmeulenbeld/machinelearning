@@ -1,3 +1,5 @@
+import os
+
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -50,7 +52,7 @@ def plot_images_with_probabilities(images, predictiondistribution):
 
         #Plot the probability distribution
         ax = axarr[i,1]
-        ax.imshow(np.expand_dims(predictiondistribution[i,:], 0), 
+        ax.imshow(np.expand_dims(predictiondistribution[i,:], 0),
             cmap=plt.get_cmap("gray"),
             interpolation="none",
             vmin=0,
@@ -77,14 +79,28 @@ def analyze_results(images, predictiondistribution, targetlabels):
     results["prediction"] = np.argmax(predictiondistribution, axis=1)
     results["correctly_classified"] = np.nonzero(results["prediction"] == targetlabels)[0]
     results["incorrectly_classified"] = np.nonzero(results["prediction"] != targetlabels)[0]
-    results["fraction"] = results["correctly_classified"].size / targetlabels.shape[0]
+    results["fraction_correct"] = results["correctly_classified"].size / targetlabels.shape[0]
+    results["fraction_incorrect"] = 1 - results["fraction_correct"]
 
     return results
 
+def show_network_resuls(network):
+    """Helper function to quickly show the first 10 digits in the validation set for a network object"""
+    images_val, labels_val = preprocess.load_mnist(dataset='testing')
+    validationoutput = network.eval_fn(images_val)
+    results = analyze_results(images_val, validationoutput, labels_val)
+    ind = np.arange(10)
+    print("Validation error: {}".format(results["fraction_incorrect"]))
+
+    # postprocess.plot_multiple_digits(images_val[ind,:,:], results["prediction"][ind])
+    plot_images_with_probabilities(images_val[ind,:,:], validationoutput[ind,:])
 
 if __name__ == "__main__":
-    path = 'data'
+    # path = 'data'
+    #
+    # images, labels = preprocess.load_mnist(path=path)
+    # # results = analyze_results(images, )
+    # plot_multiple_digits(images[0:30,:,:], labels[0:30])
 
-    images, labels = preprocess.load_mnist(path=path)
-    # results = analyze_results(images, )
-    plot_multiple_digits(images[0:30,:,:], labels[0:30])
+    nn = network.load_network(os.path.join("networks", "test"))
+    show_network_resuls(nn)

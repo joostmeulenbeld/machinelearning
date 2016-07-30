@@ -22,9 +22,19 @@ class Stopwatch(object):
     """ A simple stopwatch; you can start, stop, reset and check the time
     """
 
-    def __init__(self, name="stopwatch", start=False):
+    def __init__(self, name="", start=False, t0=0):
+        """Initialize the stopwatch
+        INPUT:
+            name="": the name used for debugging
+            start=False: immediately start the stopwatch or not
+            t0=0: the start time of the stopwatch
+        """
         self.name = name
-        self.reset(start=start)
+        self.__tcum = t0
+        self.__t = 0
+        self.__running = False
+        if start:
+            self.start()
 
     def reset(self, start=False):
         self.__tcum = 0
