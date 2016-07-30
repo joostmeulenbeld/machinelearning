@@ -46,12 +46,19 @@ class Fullyconnected_nn(object):
         self._updates = lasagne.updates.apply_nesterov_momentum(self._updates, self._params, momentum=0.9)
 
         if parameters is not None:
-            lasagne.layers.set_all_param_values(self._network, parameters)
+            self.set_parameters(parameters)
 
         self.__eval_fn = None
         self.__val_fn = None
         self.__train_fn = None
 
+    def set_parameters(self, parameters):
+        """set layer weights and biases etc)"""
+        lasagne.layers.set_all_param_values(self._network, parameters)
+
+    def get_parameters(self):
+        """get layer weights and biases etc)"""
+        return lasagne.layers.get_all_param_values(self._network)
 
     @property
     def eval_fn(self):
@@ -105,7 +112,7 @@ class Fullyconnected_nn(object):
 
         struct = {
             "networksettings": self.networksettings,
-            "parameters": lasagne.layers.get_all_param_values(self._network)
+            "parameters": self.get_parameters()
         }
         filename = self.networksettings.get_savename() + appendfilename
         if '.pkl' not in filename:

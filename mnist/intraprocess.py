@@ -60,13 +60,14 @@ class Convergence(object):
         INPUT:
             error: the new errors
         OUTPUT:
-            boolean if training has now converged or not
+            boolean if the just added value is the best value yet
         """
         self.errors = np.append(self.errors, error)
         if error < self.best_error:
             self.best_error = error
             self.best_error_epoch = self.errors.size
-        return self.converged()
+            return True
+        return False
 
     def converged(self):
         """ Return if the current error array is converged or not
