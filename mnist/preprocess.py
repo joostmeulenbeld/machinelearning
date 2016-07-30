@@ -38,7 +38,7 @@ def load_mnist(dataset="training", digits=np.arange(10), path="data"):
         images[i] = array(img[ ind[i]*rows*cols : (ind[i]+1)*rows*cols ]).reshape((rows, cols))
         labels[i] = lbl[ind[i]]
 
-    return images, labels.flatten()
+    return images.astype(np.float32), labels.flatten()
 
 def generate_target_matrix(array):
     """Generate the target matrix with probabilities based on the label array:
@@ -49,7 +49,7 @@ def generate_target_matrix(array):
 
     target = np.zeros((array.shape[0], 10))
     target[np.arange(0, array.shape[0]), array] = 1
-    return target
+    return target.astype(np.float32)
 
 if __name__ == "__main__":
     images, labels = load_mnist()
