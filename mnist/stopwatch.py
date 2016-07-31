@@ -37,11 +37,13 @@ class Stopwatch(object):
             self.start()
 
     def reset(self, start=False):
+        t_temp = self.get_time()
         self.__tcum = 0
         self.__t = 0
         self.__running = False
         if start:
             self.start()
+        return t_temp
 
     def start(self):
         assert not self.__running, "Stopwatch {} is already running!".format(self.name)

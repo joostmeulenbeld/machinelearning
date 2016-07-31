@@ -54,8 +54,9 @@ class Convergence(object):
         self.n_epochs = n_epochs
         self.best_error = 1
         self.best_error_epoch = 0
+        self.time = None
 
-    def add_point(self, error):
+    def add_point(self, error, time=None):
         """ add a data point
         INPUT:
             error: the new errors
@@ -66,6 +67,8 @@ class Convergence(object):
         if error < self.best_error:
             self.best_error = error
             self.best_error_epoch = self.errors.size
+            if time is not None:
+                self.time = time
             return True
         return False
 

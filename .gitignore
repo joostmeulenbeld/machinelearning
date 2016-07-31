@@ -4,6 +4,9 @@ mnist/data
 
 ###### Python ignore files
 
+# npy files
+*.npy
+
 # Pickle files
 *.pkl
 

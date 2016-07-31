@@ -64,7 +64,7 @@ class Fullyconnected_nn(object):
     def eval_fn(self):
         """getter of evaluation function. Only generate the function when needed, saves time during initial loading"""
         if self.__eval_fn is None:
-            print("creating evaluation function")
+            # print("creating evaluation function")
             self.__eval_fn = theano.function([self._input], self._output)
         return self.__eval_fn
 
@@ -72,7 +72,7 @@ class Fullyconnected_nn(object):
     def val_fn(self):
         """getter of validation function. Only generate the function when needed, saves time during initial loading"""
         if self.__val_fn is None:
-            print("creating validation function")
+            # print("creating validation function")
             self.__val_fn = theano.function([self._input, self._target], [self._output, self._loss])
         return self.__val_fn
 
@@ -80,7 +80,7 @@ class Fullyconnected_nn(object):
     def train_fn(self):
         """getter of training function. Only generate the function when needed, saves time during initial loading"""
         if self.__train_fn is None:
-            print("creating training function")
+            # print("creating training function")
             self.__train_fn = theano.function([self._input, self._target], [self._output, self._loss], updates=self._updates)
         return self.__train_fn
 
