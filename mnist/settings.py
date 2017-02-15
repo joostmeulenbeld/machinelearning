@@ -13,7 +13,8 @@ nonlinearities = {
 
 class NetworkSettings(object):
 
-    def __init__(self, networktype, layersizes, hlnonlinearity, olnonlinearity, folder, filename):
+    def __init__(self, networktype, layersizes, hlnonlinearity, olnonlinearity, folder, filename, inputshape=(28, 28),
+                 output_size=10):
 
         self.networktype = networktype
         self.layersizes = layersizes
@@ -21,6 +22,9 @@ class NetworkSettings(object):
         self.olnonlinearity = olnonlinearity
         self.folder = folder
         self.filename = filename
+        self.inputshape = inputshape
+        self.output_size = output_size
+
 
     def get_hlnonlinearity(self):
         """ Get the actual lasagne nonlinearity as opposed to the string used in saving"""

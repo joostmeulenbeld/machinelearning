@@ -84,19 +84,21 @@ class Fullyconnected_nn(object):
             self.__train_fn = theano.function([self._input, self._target], [self._output, self._loss], updates=self._updates)
         return self.__train_fn
 
-    def network_nn(self, image_size=(28,28)):
-        """Create the fully connected network, settings are taken from self.networksettings
-        INPUT:
-            images_size=(28,28): tuple containing the input dimension
-        """
+    def network_nn(self):
+        """Create the fully connected network, settings are taken from self.networksettings"""
         network = []
 
-        network.append(lasagne.layers.InputLayer((None, image_size[0], image_size[1]), input_var=self._input))
+        network_shape = [None]
+        for i in self.networksettings.inputshape:
+            network_shape.append(i)
+        network_shape = tuple(network_shape)
+
+        network.append(lasagne.layers.InputLayer(network_shape, input_var=self._input))
 
         for layersize in self.networksettings.layersizes:
             network.append(lasagne.layers.DenseLayer(network[-1], num_units=layersize, nonlinearity=self.networksettings.get_hlnonlinearity()))
 
-        network.append(lasagne.layers.DenseLayer(network[-1], num_units=10, nonlinearity=self.networksettings.get_olnonlinearity()))
+        network.append(lasagne.layers.DenseLayer(network[-1], num_units=self.networksettings.output_size, nonlinearity=self.networksettings.get_olnonlinearity()))
 
         return network
 
